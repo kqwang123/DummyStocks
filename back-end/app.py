@@ -30,10 +30,9 @@ def home():
     else:
         articles = []
         error_message = "Error fetching news articles"
+        print(error_message)
             
     return articles
-    
-    return []
 
 
 if __name__ == '__main__':
