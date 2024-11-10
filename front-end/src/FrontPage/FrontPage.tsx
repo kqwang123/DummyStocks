@@ -172,6 +172,7 @@ export default function FrontPage() {
             <h1>Dummy Stocks</h1>
             <div id="content">
                 <div id="articles">
+                    <h2>Articles</h2>
                     <SearchBar searchFunction={searchForArticles} placeholder={currentStock} />
                     {loadingArticle ? (
                         <div className="loading">
