@@ -5,8 +5,8 @@ import StockGraph from './StockGraph';
 
 import './FrontPage.css';
 
-const api_url = "http://127.0.0.1:5000/";
-// const api_url = "https://dummystocks.onrender.com/";
+// const api_url = "http://127.0.0.1:5000/";
+const api_url = "https://dummystocks.onrender.com/";
 
 type Stock = {
     x: number;
