@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SearchBar from './SearchBar';
 import ArticleCard from './ArticleCard';
+import StockGraph from './StockGraph';
 
 import './FrontPage.css';
 
-// const api_url = "http://127.0.0.1:5000/";
-const api_url = "https://dummystocks.onrender.com/";
+const api_url = "http://127.0.0.1:5000/";
+// const api_url = "https://dummystocks.onrender.com/";
 
 export default function FrontPage() {
     const [articles, setArticles] = useState([]);
+    const [stocks, setStocks] = useState([]);
 
     const searchForArticles = async (searchTerm: string) => {
         const query = {
@@ -44,6 +46,31 @@ export default function FrontPage() {
         setArticles(result);
     }
 
+    const searchStocks = async () => {
+        const response = await fetch(`${api_url}stocks`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const result = await response.json();
+        let earnings = result.earningsCalendar.filter((stock: any) => stock.revenueActual !== null && stock.revenueActual !== 0).slice(0, 20);
+        earnings = earnings.map((stock: any, index: number) => {
+            return {
+                x: index+1,
+                symbol: stock.symbol,
+                y: stock.revenueActual,
+            }
+        });
+
+        setStocks(earnings);
+    }
+
+    useEffect(() => {
+        searchStocks();
+    }, []);
+
     return (
         <div id="front-page">
             <h1>Front Page</h1>
@@ -62,6 +89,7 @@ export default function FrontPage() {
                 );
             }
             )}
+            <StockGraph data={stocks} />
         </div>
     );
 }

@@ -65,10 +65,10 @@ def scrape():
     else:
         return f"Failed to retrieve URL: {response.status_code}"
     
-@app.route('/get_stock', methods=['GET'])
+@app.route('/stocks', methods=['GET'])
 def get_stock():
-
-    print(finnhub_client.earnings_calendar(_from="2021-06-10", to="2021-06-30", symbol="", international=False))
+    result = finnhub_client.earnings_calendar(_from="", to="", symbol="")
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(debug=False)
