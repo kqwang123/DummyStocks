@@ -23,7 +23,8 @@ h1::after {
 }
 
 #content {
-    display: flex;                           
+    display: flex;    
+    min-height: 90vh;                       
 }
 
 #articles,
@@ -37,8 +38,8 @@ h1::after {
     border-right: 1px solid #ccc; 
     justify-content: left;
     overflow-y: auto;
+    max-height: 85vh;
     padding-right: 10px;
-    max-height: 80vh;
 }
 
 #stocks {

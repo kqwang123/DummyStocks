@@ -27,7 +27,8 @@
     display: flex;
     place-items: center;
     min-width: 320px;
-    max-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
   }
   
   h1 {

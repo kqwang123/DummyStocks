@@ -28,18 +28,48 @@ const ScatterPlot: React.FC<ScatterPlotProps> = ({ data }) => {
   const chartData = {
     datasets: [
       {
-        label: 'Scatter Plot',
+        label: 'Companies',
         data: data,
         backgroundColor: 'rgba(75, 192, 192, 1)', // Color for the points
-        pointRadius: 5, // Size of the scatter points
+        pointRadius: 10, // Size of the scatter points
       },
     ],
+  };
+
+  const options = {
+    responsive: true,
+    scales: {
+      x: {
+        type: 'linear', // Use linear scale for x-axis
+        position: 'bottom',
+      },
+      y: {
+        type: 'linear', // Use linear scale for y-axis
+        position: 'left',
+      },
+    },
+    plugins: {
+      legend: {
+        position: 'top', // Position of the legend
+      },
+      tooltip: {
+        callbacks: {
+          // Customize the tooltip
+          label: (tooltipItem: any) => {
+            const symbol = tooltipItem.raw.symbol;  // Get the symbol from the data point
+            const revenue = tooltipItem.raw.y; // Get the revenue from the data point
+            const formattedRevenue = new Intl.NumberFormat().format(revenue);
+            return `Symbol: ${symbol}, Revenue: \$${formattedRevenue}`;
+          }
+        }
+      }
+    },
   };
 
   return (
     <div>
       <h2>Scatter Plot</h2>
-      <Scatter data={chartData} />
+      <Scatter data={chartData} options={options} />
     </div>
   );
 };

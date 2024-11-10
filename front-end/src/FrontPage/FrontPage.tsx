@@ -60,13 +60,13 @@ export default function FrontPage() {
         let earnings = result.earningsCalendar.filter((stock: any) => stock.revenueActual !== null && stock.revenueActual !== 0);
 
         earnings = earnings
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 20)
             .map((stock: any, index: number) => ({
                 x: index + 1,
                 symbol: stock.symbol,
                 y: stock.revenueActual,
-            }))
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 20);
+            }));
 
         setStocks(earnings);
     }
@@ -77,7 +77,7 @@ export default function FrontPage() {
 
     return (
         <div id="front-page">
-            <h1>Front Page</h1>
+            <h1>Dummy Stocks</h1>
             <div id="content">
                 <div id="articles">
                     <SearchBar searchForArticles={searchForArticles} />

@@ -26,8 +26,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchForArticles }) => {
                 value={search} 
                 onChange={(e) => setSearch(e.target.value)} 
                 onKeyDown={handleKeyDown}
+                autoComplete="off"
             />
-            <button onClick={handleSearch}>Search</button>
+            <button id="search-bar-button" onClick={handleSearch}>Search</button>
         </div>
     );
 }
