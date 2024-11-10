@@ -27,7 +27,7 @@ finnhub_client = finnhub.Client(api_key=FINNHUB_API_KEY)
 def search():
     # Get the keyword from the form
     keywords = request.args.get('keywords')
-    
+        
     # Make a request to the News API with the specified keyword
     params = {
         'q': keywords,
@@ -36,9 +36,14 @@ def search():
     }
     response = requests.get(NEWS_API_URL, params=params)
     
+    # news = finnhub_client.company_news(keywords, _from="2024-10-01", to="2024-11-10")
+    
     # Check if the response was successful
+    # if news:
+    #     articles = news
     if response.status_code == 200:
-        articles = response.json()['articles']
+        response_json = response.json()
+        articles = response_json['articles']
     else:
         articles = []
         error_message = "Error fetching news articles"

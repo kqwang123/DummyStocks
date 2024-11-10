@@ -5,8 +5,8 @@ import StockGraph from './StockGraph';
 
 import './FrontPage.css';
 
-// const api_url = "http://127.0.0.1:5000/";
-const api_url = "https://dummystocks.onrender.com/";
+const api_url = "http://127.0.0.1:5000/";
+// const api_url = "https://dummystocks.onrender.com/";
 
 export default function FrontPage() {
     const [articles, setArticles] = useState([]);
@@ -25,6 +25,8 @@ export default function FrontPage() {
             },
         });
 
+        // const data = (await response.json());
+        // const result = data.slice(0, Math.min(10, data.length));
         const result = await response.json();
 
         try {
@@ -55,14 +57,16 @@ export default function FrontPage() {
         });
 
         const result = await response.json();
-        let earnings = result.earningsCalendar.filter((stock: any) => stock.revenueActual !== null && stock.revenueActual !== 0).slice(0, 20);
-        earnings = earnings.map((stock: any, index: number) => {
-            return {
-                x: index+1,
+        let earnings = result.earningsCalendar.filter((stock: any) => stock.revenueActual !== null && stock.revenueActual !== 0);
+
+        earnings = earnings
+            .map((stock: any, index: number) => ({
+                x: index + 1,
                 symbol: stock.symbol,
                 y: stock.revenueActual,
-            }
-        });
+            }))
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 20);
 
         setStocks(earnings);
     }
@@ -74,22 +78,34 @@ export default function FrontPage() {
     return (
         <div id="front-page">
             <h1>Front Page</h1>
-            <SearchBar searchForArticles={searchForArticles} />
-            {articles.map((article: any, index: number) => {
-                return (
-                    <ArticleCard
-                        key={index}
-                        author={article.author}
-                        title={article.title}
-                        url={article.url}
-                        description={article.description}
-                        content={article.content}
-                        date={article.publishedAt}
-                    />
-                );
-            }
-            )}
-            <StockGraph data={stocks} />
+            <div id="content">
+                <div id="articles">
+                    <SearchBar searchForArticles={searchForArticles} />
+                    {articles.map((article: any, index: number) => {
+                        return (
+                            <ArticleCard
+                                // key={index}
+                                // title={article.headline}
+                                // url={article.url}
+                                // description={article.summary}
+                                // content={article.content}
+                                // date={article.datetime}
+                                key={index}
+                                author={article.author}
+                                title={article.title}
+                                url={article.url}
+                                description={article.description}
+                                content={article.content}
+                                date={article.publishedAt}
+                            />
+                        );
+                    }
+                    )}
+                </div>
+                <div id="stocks">
+                    <StockGraph data={stocks} />
+                </div>
+            </div>
         </div>
     );
 }
