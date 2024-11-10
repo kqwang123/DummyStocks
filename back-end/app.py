@@ -5,7 +5,7 @@ from flask_cors import CORS
 import pandas as pd
 from bs4 import BeautifulSoup
 
-from config import TWELVE_DATA_API_KEY, NEWS_API_API_KEY
+from config import FINNHUB_API_KEY, NEWS_API_API_KEY
 
 app = Flask(__name__)
 CORS(app)
@@ -51,13 +51,6 @@ def scrape():
             return "Article content not found."
     else:
         return f"Failed to retrieve URL: {response.status_code}"
-
-# @app.route('/api/stock_data', methods=['GET'])
-# def stock_data():
-#     symbol = request.args.get('symbol', 'AAPL')
-#     interval = request.args.get('interval', '1min')
-#     data = get_stock_data(symbol, interval)
-#     return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)
