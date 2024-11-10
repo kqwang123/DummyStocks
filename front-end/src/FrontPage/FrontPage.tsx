@@ -16,7 +16,6 @@ type Stock = {
 
 export default function FrontPage() {
     const [articles, setArticles] = useState([]);
-    const [stocks, setStocks] = useState([]);
     const [displayStocks, setDisplayStocks] = useState<Stock[]>([]);
     const [currentStock, setCurrentStock] = useState<string>('');
     const [loadingStock, setLoadingStock] = useState(false);
@@ -79,7 +78,6 @@ export default function FrontPage() {
 
         const result = await response.json();
         let earnings = result.earningsCalendar.filter((stock: any) => stock.revenueActual !== null && stock.revenueActual !== 0);
-        setStocks(earnings);
 
         const displayed = earnings
             .sort(() => Math.random() - 0.5)

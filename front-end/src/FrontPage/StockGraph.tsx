@@ -51,6 +51,7 @@ const ScatterPlot: React.FC<ScatterPlotProps> = ({ data, searchStockArticles }) 
     const options = {
         responsive: true,
         onClick: (e: any, elements: any[]) => {
+            e.preventDefault();
             if (elements.length > 0) {
                 const clickedIndex = elements[0].index;
                 // If the clicked point is already the selected one, reset the selection
