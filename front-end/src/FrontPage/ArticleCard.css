@@ -1,0 +1,9 @@
+#article-card {
+    border: 1px solid white;    /* White border */
+    padding: 20px;              /* Adds padding inside the card */
+    margin: 10px;               /* Adds spacing around the card */
+    border-radius: 8px;         /* Rounded corners */
+    background-color: #2e2e2e;  /* Background color for contrast */
+    color: #f1f1f1;             /* Text color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}

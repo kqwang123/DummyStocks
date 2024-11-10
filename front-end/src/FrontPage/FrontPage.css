@@ -1,0 +1,23 @@
+#h1{
+    font-size: 48px;                         /* Large font size */
+    font-weight: bold;                       /* Make it bold */
+    text-align: center;                      /* Center the text */
+    margin: 20px 0;                          /* Add spacing around the title */
+    font-family: 'Helvetica Neue', sans-serif; /* Use a clean, modern font */
+    letter-spacing: 1.5px;                   /* Increase letter spacing for a sleek look */
+    text-transform: uppercase;               /* Make the title uppercase */
+    background: linear-gradient(45deg, #ff8a00, #e52e71); /* Gradient color */
+    -webkit-background-clip: text;           /* Clip gradient to text */
+    -webkit-text-fill-color: transparent;    /* Make the fill color transparent */
+    text-shadow: 2px 4px 6px rgba(15, 14, 14, 0.935);
+}
+
+h1::after {
+    content: '';
+    display: block;
+    width: 80px;                             /* Width of the underline */
+    height: 4px;                             /* Height of the underline */
+    background-color: #e52e71;               /* Color of the underline */
+    margin: 10px auto 0;                     /* Center the underline below text */
+    border-radius: 2px;                      /* Rounded edges */
+}

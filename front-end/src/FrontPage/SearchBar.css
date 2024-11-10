@@ -1,22 +1,27 @@
 
 
-#search-bar {
-    display: flex;                /* Aligns the input and button horizontally */
-    align-items: center;          /* Vertically centers the input and button */
-    gap: 10px;                    /* Adds space between the input field and the button */
-    margin: 20px auto;            /* Centers the search bar horizontally and gives it vertical space */
-    width: 80%;                   /* Makes the search bar take up 80% of the available width */
-    max-width: 600px;             /* Limits the max width of the search bar to 600px */
-}
+
 
 /* Styling for the input field */
+#search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px auto;
+    max-width: 400px;
+    padding: 5px;
+    border-radius: 8px;
+    background-color: #f1f1f1; /* Light gray background for contrast */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
 #search-input {
-    background-color: white;     /* White background for input field */
-    color: red;                  /* Red text inside the input */
-    padding: 12px;                /* Adds padding for a larger input box */
-    font-size: 18px;              /* Larger text for better readability */
-    width: 100%;                  /* Makes the input field take up full width of its container */
-    border: 2px solid #ccc;      /* Light gray border for the input */
-    border-radius: 4px;          /* Rounded corners for a smooth look */
-    box-sizing: border-box;      /* Ensures padding doesn't cause the input to overflow */
+    flex: 1; /* Makes the input take up all available space */
+    padding: 10px 15px;
+    border: 1px solid #cccccc; /* Light border */
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
 }
