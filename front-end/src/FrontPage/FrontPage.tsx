@@ -25,7 +25,7 @@ export default function FrontPage() {
         try {
             for (let i = 0; i < result.length; i++) {
                 const urlLink = result[i].url;
-                const res = await fetch(`http://127.0.0.1:5000/scrape?url=${urlLink}`, {
+                const res = await fetch(`https://dummystocks.onrender.com/scrape?url=${urlLink}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
