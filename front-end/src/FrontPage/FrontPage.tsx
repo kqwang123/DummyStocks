@@ -21,22 +21,24 @@ export default function FrontPage() {
         });
 
         const result = await response.json();
-        
+
         try {
-            const urlLink = result[0].url;
-            const res = await fetch(`http://127.0.0.1:5000/scrape?url=${urlLink}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const resText = await res.text();
-            console.log(resText);
-            
+            for (let i = 0; i < result.length; i++) {
+                const urlLink = result[i].url;
+                const res = await fetch(`http://127.0.0.1:5000/scrape?url=${urlLink}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const resText = await res.text();
+                result[i].content = resText;
+            }
+
         } catch (error) {
             console.error(error);
         }
-
+        console.log(result);
         setArticles(result);
     }
 
