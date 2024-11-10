@@ -21,6 +21,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchForArticles }) => {
     return (
         <div id="search-bar">
             <input 
+                id="search-input"
                 type="text" 
                 value={search} 
                 onChange={(e) => setSearch(e.target.value)} 

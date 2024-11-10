@@ -1,0 +1,27 @@
+
+
+
+
+/* Styling for the input field */
+#search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px auto;
+    max-width: 400px;
+    padding: 5px;
+    border-radius: 8px;
+    background-color: #f1f1f1; /* Light gray background for contrast */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+#search-input {
+    flex: 1; /* Makes the input take up all available space */
+    padding: 10px 15px;
+    border: 1px solid #cccccc; /* Light border */
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}

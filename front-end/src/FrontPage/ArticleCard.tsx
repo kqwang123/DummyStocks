@@ -17,7 +17,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ author, title, url, descripti
             <p>Author: {author}</p>
             <p>Description: {description}</p>
             <p>Content: {content}</p>
-            <p>URL: {url}</p>
+            <a href={url}>URL: {url}</a>
             <p>Date: {date}</p>
         </div>
     );
