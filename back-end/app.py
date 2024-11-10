@@ -10,7 +10,7 @@ import finnhub
 from dotenv import load_dotenv
 import os
 
-from openai_main import OpenAICall, OpenAICallResponse
+from llmodel import LLMCall, LLMCallResponse
 
 app = Flask(__name__)
 CORS(app)
@@ -58,7 +58,7 @@ def scrape():
         article = soup.find('article')  
 
         if article:
-            aicall = OpenAICall(article.get_text(strip=True),chat_history)
+            aicall = LLMCall(article.get_text(strip=True),chat_history)
             return aicall
         else:
             return "Article content not found."

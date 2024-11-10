@@ -43,7 +43,7 @@ llm = LLM(api_key)
 #     # {"role": "assistant", "content": "Python is a high-level programming language..."},
 # ]
 
-def OpenAICall(input_variable, chat_history):
+def LLMCall(input_variable, chat_history):
     # append "role": "user" and "content":input_variable to a dataset
     chat_history.append({"role":"user", "content":input_variable})
     prompt = f"Please make the following data concise and under 100 words: {input_variable}"
@@ -53,7 +53,7 @@ def OpenAICall(input_variable, chat_history):
 
     return response
 
-def OpenAICallResponse(input_variable, chat_history):
+def LLMCallResponse(input_variable, chat_history):
     # Example with conversation history
     
     # append "role": "user" and "content":input_variable to a dataset
