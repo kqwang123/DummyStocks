@@ -1,6 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from './SearchBar';
 import ArticleCard from './ArticleCard';
+
+import axios from 'axios';
 
 import './FrontPage.css';
 
@@ -16,12 +18,17 @@ export default function FrontPage() {
         const response = await fetch(`http://127.0.0.1:5000/search?${queryString}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',  
+                'Content-Type': 'application/json',
             },
         });
 
         const result = await response.json();
-        console.log(result);
+        
+        // axios.get(result[0].url).then(function (r) {
+
+            
+        // });
+
         setArticles(result);
     }
 
@@ -31,7 +38,7 @@ export default function FrontPage() {
             <SearchBar searchForArticles={searchForArticles} />
             {articles.map((article: any, index: number) => {
                 return (
-                    <ArticleCard 
+                    <ArticleCard
                         key={index}
                         author={article.author}
                         title={article.title}
