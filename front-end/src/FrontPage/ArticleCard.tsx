@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './ArticleCard.css';
+
 // Define types for the props
 interface ArticleCardProps {
     author: string;

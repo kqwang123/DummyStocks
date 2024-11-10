@@ -54,7 +54,6 @@ def search():
 @app.route('/scrape', methods=['GET'])
 def scrape():
     url = request.args.get('url')
-    print(url)
     response = requests.get(url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, 'html.parser')
@@ -71,9 +70,24 @@ def scrape():
         return f"Failed to retrieve URL: {response.status_code}"
     
 @app.route('/stocks', methods=['GET'])
-def get_stock():
+def stocks():
     result = finnhub_client.earnings_calendar(_from="", to="", symbol="")
     return jsonify(result)
+
+@app.route('/get_stock', methods=['GET'])
+def get_stock():
+    keywords = request.args.get('keywords')
+    result = finnhub_client.symbol_lookup(keywords)
+    return result
+
+@app.route('/get_stock_data', methods=['GET'])
+def get_stock_data():
+    symbol = request.args.get('symbol')
+    try:
+        result = finnhub_client.earnings_calendar(_from="", to="", symbol=symbol)
+    except:
+        result = []
+    return result
 
 if __name__ == '__main__':
     app.run(debug=False)

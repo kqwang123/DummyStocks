@@ -8,9 +8,16 @@ import './FrontPage.css';
 const api_url = "http://127.0.0.1:5000/";
 // const api_url = "https://dummystocks.onrender.com/";
 
+type Stock = {
+    x: number;
+    symbol: string;
+    y: number;
+};
+
 export default function FrontPage() {
     const [articles, setArticles] = useState([]);
     const [stocks, setStocks] = useState([]);
+    const [displayStocks, setDisplayStocks] = useState<Stock[]>([]);
 
     const searchForArticles = async (searchTerm: string) => {
         const query = {
@@ -48,7 +55,7 @@ export default function FrontPage() {
         setArticles(result);
     }
 
-    const searchStocks = async () => {
+    const getStocks = async () => {
         const response = await fetch(`${api_url}stocks`, {
             method: 'GET',
             headers: {
@@ -58,21 +65,71 @@ export default function FrontPage() {
 
         const result = await response.json();
         let earnings = result.earningsCalendar.filter((stock: any) => stock.revenueActual !== null && stock.revenueActual !== 0);
+        setStocks(earnings);
 
-        earnings = earnings
+        const displayed = earnings
             .sort(() => Math.random() - 0.5)
             .slice(0, 20)
-            .map((stock: any, index: number) => ({
-                x: index + 1,
-                symbol: stock.symbol,
-                y: stock.revenueActual,
-            }));
+                .map((stock: any, index: number) => ({
+                    x: index + 1,
+                    symbol: stock.symbol,
+                    y: stock.revenueActual,
+                }));
 
-        setStocks(earnings);
+        setDisplayStocks(displayed);
+    }
+
+    const searchStock = async (searchTerm: string) => {
+        const query = {
+            keywords: searchTerm
+        }
+        const queryString = new URLSearchParams(query).toString();
+
+        const response = await fetch(`${api_url}get_stock?${queryString}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const result = await response.json();
+        const filteredResult = result.result.filter((item: any) => item.type === "Common Stock");
+
+        if (filteredResult.length === 0) {
+            alert("No stock found");
+        }
+        else {
+            const stockResponse =  await fetch(`${api_url}get_stock_data?symbol=${filteredResult[0].symbol}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const stockData = await stockResponse.json();
+            if (stockData.length === 0) {
+                alert("No stock data found");
+            }
+            else {
+
+                const newStock: Stock = {
+                    x: 1,
+                    symbol: stockData.earningsCalendar[0].symbol,
+                    y: stockData.earningsCalendar[0].revenueActual,
+                };
+
+                // Create a new array where the first element is newStock, and the rest remains the same
+                let newStocks = [newStock, ...displayStocks.slice(1)];
+                console.log(newStocks);
+
+                // Update the state with the new array
+                setDisplayStocks(newStocks);
+            }
+        }
     }
 
     useEffect(() => {
-        searchStocks();
+        getStocks();
     }, []);
 
     return (
@@ -80,16 +137,10 @@ export default function FrontPage() {
             <h1>Dummy Stocks</h1>
             <div id="content">
                 <div id="articles">
-                    <SearchBar searchForArticles={searchForArticles} />
+                    <SearchBar searchFunction={searchForArticles} placeholder='' />
                     {articles.map((article: any, index: number) => {
                         return (
                             <ArticleCard
-                                // key={index}
-                                // title={article.headline}
-                                // url={article.url}
-                                // description={article.summary}
-                                // content={article.content}
-                                // date={article.datetime}
                                 key={index}
                                 author={article.author}
                                 title={article.title}
@@ -103,7 +154,9 @@ export default function FrontPage() {
                     )}
                 </div>
                 <div id="stocks">
-                    <StockGraph data={stocks} />
+                    <h2>Stocks</h2>
+                    <SearchBar searchFunction={searchStock} placeholder='Stock symbols here' />
+                    <StockGraph data={displayStocks} />
                 </div>
             </div>
         </div>

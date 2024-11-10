@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 
 // Define the type for the props
 interface SearchBarProps {
-  searchForArticles: (searchTerm: string) => void;
+    placeholder: string;
+    searchFunction: (searchTerm: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ searchForArticles }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ placeholder, searchFunction }) => {
     const [search, setSearch] = useState<string>('');
 
     const handleSearch = async () => {
-        await searchForArticles(search);        
+        await searchFunction(search);        
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -27,6 +28,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchForArticles }) => {
                 onChange={(e) => setSearch(e.target.value)} 
                 onKeyDown={handleKeyDown}
                 autoComplete="off"
+                placeholder={placeholder}
             />
             <button id="search-bar-button" onClick={handleSearch}>Search</button>
         </div>
