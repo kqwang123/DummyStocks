@@ -1,12 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, request
 import requests
 from flask_cors import CORS
+from config import TWELVE_DATA_API_KEY, NEWS_API_API_KEY
 
 app = Flask(__name__)
 CORS(app)
-
-# Your News API key (replace with your actual API key)
-API_KEY = '71d7039eaa7447e281f44fc298daf45b'
 
 # News API endpoint
 NEWS_API_URL = 'https://newsapi.org/v2/everything'
@@ -19,7 +17,7 @@ def home():
     # Make a request to the News API with the specified keyword
     params = {
         'q': keywords,
-        'apiKey': API_KEY,
+        'apiKey': NEWS_API_API_KEY,
         'pageSize': 10  # Limit results to 10 articles
     }
     response = requests.get(NEWS_API_URL, params=params)
@@ -34,6 +32,12 @@ def home():
             
     return articles
 
+@app.route('/api/stock_data', methods=['GET'])
+def stock_data():
+    symbol = request.args.get('symbol', 'AAPL')
+    interval = request.args.get('interval', '1min')
+    data = get_stock_data(symbol, interval)
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)
