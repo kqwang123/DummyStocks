@@ -38,20 +38,7 @@ const ScatterPlot: React.FC<ScatterPlotProps> = ({ data }) => {
 
   const options = {
     responsive: true,
-    scales: {
-      x: {
-        type: 'linear', // Use linear scale for x-axis
-        position: 'bottom',
-      },
-      y: {
-        type: 'linear', // Use linear scale for y-axis
-        position: 'left',
-      },
-    },
     plugins: {
-      legend: {
-        position: 'top', // Position of the legend
-      },
       tooltip: {
         callbacks: {
           // Customize the tooltip
@@ -68,7 +55,7 @@ const ScatterPlot: React.FC<ScatterPlotProps> = ({ data }) => {
 
   return (
     <div>
-      <h2>Scatter Plot</h2>
+      <h2>Stocks</h2>
       <Scatter data={chartData} options={options} />
     </div>
   );
