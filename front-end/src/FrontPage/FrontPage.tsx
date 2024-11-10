@@ -4,6 +4,9 @@ import ArticleCard from './ArticleCard';
 
 import './FrontPage.css';
 
+// const api_url = "http://127.0.0.1:5000/";
+const api_url = "https://dummystocks.onrender.com/";
+
 export default function FrontPage() {
     const [articles, setArticles] = useState([]);
 
@@ -13,7 +16,7 @@ export default function FrontPage() {
         }
         const queryString = new URLSearchParams(query).toString();
 
-        const response = await fetch(`https://dummystocks.onrender.com/search?${queryString}`, {
+        const response = await fetch(`${api_url}search?${queryString}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -25,7 +28,7 @@ export default function FrontPage() {
         try {
             for (let i = 0; i < result.length; i++) {
                 const urlLink = result[i].url;
-                const res = await fetch(`https://dummystocks.onrender.com/scrape?url=${urlLink}`, {
+                const res = await fetch(`${api_url}scrape?url=${urlLink}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
