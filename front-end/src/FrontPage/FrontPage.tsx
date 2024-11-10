@@ -18,8 +18,10 @@ export default function FrontPage() {
     const [articles, setArticles] = useState([]);
     const [stocks, setStocks] = useState([]);
     const [displayStocks, setDisplayStocks] = useState<Stock[]>([]);
+    const [currentStock, setCurrentStock] = useState<string>('');
 
     const searchForArticles = async (searchTerm: string) => {
+        searchTerm = searchTerm + " company news";
         const query = {
             keywords: searchTerm
         }
@@ -55,6 +57,11 @@ export default function FrontPage() {
         setArticles(result);
     }
 
+    const searchStockArticles = async (symbol: string) => {
+        await getStockName(symbol);
+        searchForArticles(currentStock);
+    }
+
     const getStocks = async () => {
         const response = await fetch(`${api_url}stocks`, {
             method: 'GET',
@@ -77,6 +84,23 @@ export default function FrontPage() {
                 }));
 
         setDisplayStocks(displayed);
+    }
+
+    const getStockName = async (symbol: string) => {
+        const query = {
+            keywords: symbol
+        }
+        const queryString = new URLSearchParams(query).toString();
+
+        const response = await fetch(`${api_url}get_stock?${queryString}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const result = await response.json();
+        setCurrentStock(result.result[0].description);
     }
 
     const searchStock = async (searchTerm: string) => {
@@ -137,7 +161,7 @@ export default function FrontPage() {
             <h1>Dummy Stocks</h1>
             <div id="content">
                 <div id="articles">
-                    <SearchBar searchFunction={searchForArticles} placeholder='' />
+                    <SearchBar searchFunction={searchForArticles} placeholder={currentStock} />
                     {articles.map((article: any, index: number) => {
                         return (
                             <ArticleCard
@@ -156,7 +180,7 @@ export default function FrontPage() {
                 <div id="stocks">
                     <h2>Stocks</h2>
                     <SearchBar searchFunction={searchStock} placeholder='Stock symbols here' />
-                    <StockGraph data={displayStocks} />
+                    <StockGraph data={displayStocks} searchStockArticles={searchStockArticles} />
                 </div>
             </div>
         </div>

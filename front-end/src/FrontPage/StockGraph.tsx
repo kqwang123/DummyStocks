@@ -21,9 +21,10 @@ ChartJS.register(
 
 interface ScatterPlotProps {
     data: { x: number, y: number, symbol: string }[];
+    searchStockArticles: (symbol: string) => void;
 }
 
-const ScatterPlot: React.FC<ScatterPlotProps> = ({ data }) => {
+const ScatterPlot: React.FC<ScatterPlotProps> = ({ data, searchStockArticles }) => {
     const [clickedPointIndex, setClickedPointIndex] = useState<number | null>(null);
 
     useEffect(() => {
@@ -57,6 +58,7 @@ const ScatterPlot: React.FC<ScatterPlotProps> = ({ data }) => {
                     setClickedPointIndex(null); // Deselect the point
                 } else {
                     setClickedPointIndex(clickedIndex); // Select the new point
+                    searchStockArticles(data[clickedIndex].symbol);
                 }
             }
         },
