@@ -7,14 +7,18 @@ from bs4 import BeautifulSoup
 
 import finnhub
 
-from config import FINNHUB_API_KEY, NEWS_API_API_KEY
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 CORS(app)
 
 # News API endpoint
 NEWS_API_URL = 'https://newsapi.org/v2/everything'
+load_dotenv()
 
+FINNHUB_API_KEY = os.getenv('FINNHUB_API_KEY')
+NEWS_API_API_KEY = os.getenv('NEWS_API_API_KEY')
 finnhub_client = finnhub.Client(api_key=FINNHUB_API_KEY)
 
 @app.route('/search', methods=['GET'])

@@ -13,7 +13,7 @@ export default function FrontPage() {
         }
         const queryString = new URLSearchParams(query).toString();
 
-        const response = await fetch(`http://127.0.0.1:5000/search?${queryString}`, {
+        const response = await fetch(`https://dummystocks.onrender.com/search?${queryString}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
