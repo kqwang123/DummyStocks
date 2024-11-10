@@ -41,7 +41,6 @@ export default function FrontPage() {
         } catch (error) {
             console.error(error);
         }
-        console.log(result);
         setArticles(result);
     }
 

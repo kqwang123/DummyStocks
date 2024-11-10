@@ -10,6 +10,8 @@ import finnhub
 from dotenv import load_dotenv
 import os
 
+from openai_main import OpenAICall, OpenAICallResponse
+
 app = Flask(__name__)
 CORS(app)
 
@@ -41,20 +43,23 @@ def search():
         articles = []
         error_message = "Error fetching news articles"
         print(error_message)
-            
+
     return articles
 
 @app.route('/scrape', methods=['GET'])
 def scrape():
     url = request.args.get('url')
-    
+    print(url)
     response = requests.get(url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, 'html.parser')
         
+        chat_history= []
         article = soup.find('article')  
+
         if article:
-            return article.get_text(strip=True)  
+            aicall = OpenAICall(article.get_text(strip=True),chat_history)
+            return aicall
         else:
             return "Article content not found."
     else:
