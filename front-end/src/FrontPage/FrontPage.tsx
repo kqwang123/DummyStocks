@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import SearchBar from './SearchBar';
 import ArticleCard from './ArticleCard';
 
-import axios from 'axios';
-
 import './FrontPage.css';
 
 export default function FrontPage() {
@@ -24,10 +22,20 @@ export default function FrontPage() {
 
         const result = await response.json();
         
-        // axios.get(result[0].url).then(function (r) {
-
+        try {
+            const urlLink = result[0].url;
+            const res = await fetch(`http://127.0.0.1:5000/scrape?url=${urlLink}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const resText = await res.text();
+            console.log(resText);
             
-        // });
+        } catch (error) {
+            console.error(error);
+        }
 
         setArticles(result);
     }
