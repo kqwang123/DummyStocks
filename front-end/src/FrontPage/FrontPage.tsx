@@ -19,8 +19,11 @@ export default function FrontPage() {
     const [stocks, setStocks] = useState([]);
     const [displayStocks, setDisplayStocks] = useState<Stock[]>([]);
     const [currentStock, setCurrentStock] = useState<string>('');
+    const [loadingStock, setLoadingStock] = useState(false);
+    const [loadingArticle, setLoadingArticle] = useState(false);
 
     const searchForArticles = async (searchTerm: string) => {
+        setLoadingArticle(true);
         searchTerm = searchTerm + " company news";
         const query = {
             keywords: searchTerm
@@ -55,14 +58,18 @@ export default function FrontPage() {
             console.error(error);
         }
         setArticles(result);
+        setLoadingArticle(false);
     }
 
     const searchStockArticles = async (symbol: string) => {
-        await getStockName(symbol);
-        searchForArticles(currentStock);
+        setLoadingStock(true);
+        const stockInSearch = await getStockName(symbol);
+        searchForArticles(stockInSearch);
+        setLoadingStock(false);
     }
 
     const getStocks = async () => {
+        setLoadingStock(true);
         const response = await fetch(`${api_url}stocks`, {
             method: 'GET',
             headers: {
@@ -77,16 +84,18 @@ export default function FrontPage() {
         const displayed = earnings
             .sort(() => Math.random() - 0.5)
             .slice(0, 20)
-                .map((stock: any, index: number) => ({
-                    x: index + 1,
-                    symbol: stock.symbol,
-                    y: stock.revenueActual,
-                }));
+            .map((stock: any, index: number) => ({
+                x: index + 1,
+                symbol: stock.symbol,
+                y: stock.revenueActual,
+            }));
 
         setDisplayStocks(displayed);
+        setLoadingStock(false);
     }
 
     const getStockName = async (symbol: string) => {
+        setLoadingStock(true);
         const query = {
             keywords: symbol
         }
@@ -101,9 +110,12 @@ export default function FrontPage() {
 
         const result = await response.json();
         setCurrentStock(result.result[0].description);
+        setLoadingStock(false);
+        return result.result[0].description;
     }
 
     const searchStock = async (searchTerm: string) => {
+        setLoadingStock(true);
         const query = {
             keywords: searchTerm
         }
@@ -123,7 +135,7 @@ export default function FrontPage() {
             alert("No stock found");
         }
         else {
-            const stockResponse =  await fetch(`${api_url}get_stock_data?symbol=${filteredResult[0].symbol}`, {
+            const stockResponse = await fetch(`${api_url}get_stock_data?symbol=${filteredResult[0].symbol}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -150,6 +162,7 @@ export default function FrontPage() {
                 setDisplayStocks(newStocks);
             }
         }
+        setLoadingStock(false);
     }
 
     useEffect(() => {
@@ -162,24 +175,30 @@ export default function FrontPage() {
             <div id="content">
                 <div id="articles">
                     <SearchBar searchFunction={searchForArticles} placeholder={currentStock} />
-                    {articles.map((article: any, index: number) => {
-                        return (
+                    {loadingArticle ? (
+                        <div className="loading">
+                            Loading...
+                        </div>
+                    ) : (
+                        articles.map((article: any, index: number) => (
                             <ArticleCard
                                 key={index}
-                                author={article.author}
                                 title={article.title}
                                 url={article.url}
-                                description={article.description}
                                 content={article.content}
                                 date={article.publishedAt}
                             />
-                        );
-                    }
+                        ))
                     )}
                 </div>
                 <div id="stocks">
                     <h2>Stocks</h2>
                     <SearchBar searchFunction={searchStock} placeholder='Stock symbols here' />
+                    {loadingStock && (
+                        <div className="loading">
+                            Loading...
+                        </div>
+                    )}
                     <StockGraph data={displayStocks} searchStockArticles={searchStockArticles} />
                 </div>
             </div>

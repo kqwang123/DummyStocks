@@ -67,7 +67,7 @@ def scrape():
         else:
             return "Article content not found."
     else:
-        return f"Failed to retrieve URL: {response.status_code}"
+        return f"Webscraping blocked by url"
     
 @app.route('/stocks', methods=['GET'])
 def stocks():
