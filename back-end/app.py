@@ -5,6 +5,8 @@ from flask_cors import CORS
 import pandas as pd
 from bs4 import BeautifulSoup
 
+import finnhub
+
 from config import FINNHUB_API_KEY, NEWS_API_API_KEY
 
 app = Flask(__name__)
@@ -12,6 +14,8 @@ CORS(app)
 
 # News API endpoint
 NEWS_API_URL = 'https://newsapi.org/v2/everything'
+
+finnhub_client = finnhub.Client(api_key=FINNHUB_API_KEY)
 
 @app.route('/search', methods=['GET'])
 def search():
@@ -51,6 +55,11 @@ def scrape():
             return "Article content not found."
     else:
         return f"Failed to retrieve URL: {response.status_code}"
+    
+@app.route('/get_stock', methods=['GET'])
+def get_stock():
+
+    print(finnhub_client.earnings_calendar(_from="2021-06-10", to="2021-06-30", symbol="", international=False))
 
 if __name__ == '__main__':
     app.run(debug=True)
